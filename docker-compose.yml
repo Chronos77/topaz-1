@@ -13,6 +13,7 @@ services:
     # Run all the .sql files in the /sql directory to initalize the DB. This only hapens the first time this service is started and will not handle additions/modifications
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
+      - ./mariadb:/var/lib/mysql
     ports:
       - "3306:3306"
 
@@ -31,6 +32,8 @@ services:
     build: .
     depends_on:
       - "db"
+    volumes:
+      - ./scripts/globals:/topaz/scripts/globals
     ports:
       # topaz_connect
       - "54230:54230/tcp"
