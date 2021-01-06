@@ -8,10 +8,10 @@ local ID = require("scripts/zones/Dynamis-Xarcabard/IDs")
 
 function onMobEngaged(mob, target)
 
-    if (mob:AnimationSub() == 3) then
-        SetDropRate(116, 1575, 1000)
+    if (mob:getAnimationSub() == 3) then
+        tpz.core.setDropRate(116, 1575, 1000)
     else
-        SetDropRate(116, 1575, 0)
+        tpz.core.setDropRate(116, 1575, 0)
     end
 
     target:showText(mob, ID.text.ANIMATED_TABAR_DIALOG)

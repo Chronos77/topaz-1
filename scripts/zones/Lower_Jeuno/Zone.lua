@@ -61,7 +61,7 @@ end
 function onGameHour(zone)
     local VanadielHour = VanadielHour()
     local playerOnQuestId = GetServerVariable("[JEUNO]CommService")
-    local playerOnQuest = GetPlayerByID(playerOnQuestId)
+    local playerOnQuest = tpz.core.getPlayerByID(playerOnQuestId)
 
     -- Community Service Quest
     -- 7AM: it's daytime. turn off all the lights
@@ -84,7 +84,7 @@ function onGameHour(zone)
 
     -- 9PM: notify the person on the quest that they can begin lighting lamps
     elseif VanadielHour == 21 then
-        local playerOnQuest = GetPlayerByID(GetServerVariable("[JEUNO]CommService"))
+        local playerOnQuest = tpz.core.getPlayerByID(GetServerVariable("[JEUNO]CommService"))
         if playerOnQuest then
             playerOnQuest:startEvent(114)
         end
@@ -112,7 +112,7 @@ function onEventFinish(player, csid, option)
     if csid == 20 then
         player:addCharVar("ZilartStatus", 2)
     elseif csid == 10094 then
-        player:completeMission(ACP, tpz.mission.id.acp.A_CRYSTALLINE_PROPHECY)
-        player:addMission(ACP, tpz.mission.id.acp.THE_ECHO_AWAKENS)
+        player:completeMission(tpz.mission.log_id.ACP, tpz.mission.id.acp.A_CRYSTALLINE_PROPHECY)
+        player:addMission(tpz.mission.log_id.ACP, tpz.mission.id.acp.THE_ECHO_AWAKENS)
     end
 end

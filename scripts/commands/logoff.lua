@@ -20,7 +20,7 @@ function onTrigger(player, target)
     if (target == nil) then
         targ = player
     else
-        targ = GetPlayerByName( target )
+        targ = tpz.core.getPlayerByName( target )
         if (targ == nil) then
             error(player, string.format( "Invalid player '%s' given.", target ) )
             return
@@ -28,7 +28,7 @@ function onTrigger(player, target)
     end
 
     -- logoff target
-    targ:leavegame()
+    targ:leaveGame()
     if (targ:getID() ~= player:getID()) then
         player:PrintToPlayer(string.format("%s has been logged off.", targ:getName()))
     end
