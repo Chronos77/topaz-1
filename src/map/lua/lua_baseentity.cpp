@@ -2781,8 +2781,6 @@ bool CLuaBaseEntity::bringPlayer(std::string const& playerName)
 
 uint16 CLuaBaseEntity::getEquipID(SLOTTYPE slot)
 {
-    TPZ_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC && m_PBaseEntity->objtype != TYPE_PET && m_PBaseEntity->objtype != TYPE_MOB);
-
     if (m_PBaseEntity->objtype == TYPE_PC)
     {
         TPZ_DEBUG_BREAK_IF(slot > 15);
@@ -2808,8 +2806,6 @@ uint16 CLuaBaseEntity::getEquipID(SLOTTYPE slot)
 
 std::optional<CLuaItem> CLuaBaseEntity::getEquippedItem(uint8 slot)
 {
-    TPZ_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
-
     if (m_PBaseEntity->objtype == TYPE_PC)
     {
         TPZ_DEBUG_BREAK_IF(slot > 15);
@@ -2835,7 +2831,10 @@ std::optional<CLuaItem> CLuaBaseEntity::getEquippedItem(uint8 slot)
 
 bool CLuaBaseEntity::hasItem(uint16 itemID, sol::object const& location)
 {
-    TPZ_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+    if (m_PBaseEntity->objtype != TYPE_PC)
+    {
+        return false;
+    }
 
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
 
@@ -5459,7 +5458,10 @@ void CLuaBaseEntity::completeQuest(uint8 questLogID, uint16 questID)
 
 void CLuaBaseEntity::addMission(uint8 missionLogID, uint16 missionID)
 {
-    TPZ_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+    if (m_PBaseEntity->objtype != TYPE_PC)
+    {
+        return;
+    }
 
     if (missionLogID < MAX_MISSIONAREA && missionID < MAX_MISSIONID)
     {
@@ -11775,21 +11777,20 @@ sol::table CLuaBaseEntity::getEnmityList()
 
     if (enmityList)
     {
-        sol::table table = luautils::lua.create_table();
-        int        i     = 1;
+        auto table = luautils::lua.create_table();
         for (auto member : *enmityList)
         {
             if (member.second.PEnmityOwner)
             {
-                sol::table subTable;
+                auto subTable = luautils::lua.create_table();
 
-                subTable.add("entity", CLuaBaseEntity(member.second.PEnmityOwner));
-                subTable.add("ce", member.second.CE);
-                subTable.add("ve", member.second.VE);
-                subTable.add("active", member.second.active);
-                subTable.add("tameable", ((CMobEntity*)m_PBaseEntity)->PEnmityContainer->IsTameable());
+                subTable["entity"] = CLuaBaseEntity(member.second.PEnmityOwner);
+                subTable["ce"] = member.second.CE;
+                subTable["ve"] = member.second.VE;
+                subTable["active"] = member.second.active;
+                subTable["tameable"] = ((CMobEntity*)m_PBaseEntity)->PEnmityContainer->IsTameable();
 
-                table.add(i++, subTable);
+                table.add(subTable);
             }
         }
 
