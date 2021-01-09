@@ -196,8 +196,10 @@ bool CLuaBattlefield::loadMobs()
     return m_PLuaBattlefield->LoadMobs();
 }
 
-bool CLuaBattlefield::spawnLoot(CLuaBaseEntity* PEntity)
+bool CLuaBattlefield::spawnLoot(sol::object const& PEntityObj)
 {
+    auto PEntity = PEntityObj.is<CLuaBaseEntity*>() ? PEntityObj.as<CLuaBaseEntity*>() : nullptr;
+
     return m_PLuaBattlefield->SpawnLoot(PEntity->GetBaseEntity());
 }
 
