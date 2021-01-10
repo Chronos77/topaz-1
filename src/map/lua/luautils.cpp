@@ -24,7 +24,7 @@
 #include "../../common/utils.h"
 
 #include <array>
-#include <filesystem>
+// #include <filesystem>
 #include <optional>
 #include <string>
 #include <unordered_map>
@@ -282,44 +282,44 @@ namespace luautils
         return 0;
     }
 
-    void EnableFilewatcher()
-    {
-        // Prepare script file watcher
-        auto watchReaction = [](const std::filesystem::path& path, const filewatch::Event change_type) {
-            // If a Lua file is modified
-            if (path.extension() == ".lua" && change_type == filewatch::Event::modified)
-            {
-                // Split into parts
-                std::vector<std::string> parts;
-                for (auto part : path)
-                {
-                    part.replace_extension("");
-                    parts.emplace_back(part.string());
-                }
+    // void EnableFilewatcher()
+    // {
+    //     // Prepare script file watcher
+    //     auto watchReaction = [](const std::filesystem::path& path, const filewatch::Event change_type) {
+    //         // If a Lua file is modified
+    //         if (path.extension() == ".lua" && change_type == filewatch::Event::modified)
+    //         {
+    //             // Split into parts
+    //             std::vector<std::string> parts;
+    //             for (auto part : path)
+    //             {
+    //                 part.replace_extension("");
+    //                 parts.emplace_back(part.string());
+    //             }
 
-                // Loads the script, get the entity
-                auto result = lua.safe_script_file("./scripts/" + path.generic_string());
-                if (!result.valid())
-                {
-                    sol::error err = result;
-                    std::cout << "  - Error: " << err.what() << "\n";
-                    return;
-                }
+    //             // Loads the script, get the entity
+    //             auto result = lua.safe_script_file("./scripts/" + path.generic_string());
+    //             if (!result.valid())
+    //             {
+    //                 sol::error err = result;
+    //                 std::cout << "  - Error: " << err.what() << "\n";
+    //                 return;
+    //             }
 
-                // Update the cache
-                if (result.return_count())
-                {
-                    // TODO: This is nasty, gotta be a cleaner way of handling this
-                    if (parts[2] == "mobs")
-                    {
-                        lua[sol::create_if_nil]["tpz"][parts[0]][parts[1]][parts[2]][parts[3]] = result;
-                        std::cout << "  - Cached to: " << fmt::format("tpz.{}.{}.{}.{}", parts[0], parts[1], parts[2], parts[3]) << "\n";
-                    }
-                }
-            }
-        };
-        watch = std::make_unique<filewatch::FileWatch<std::string>>("./scripts/", watchReaction);
-    }
+    //             // Update the cache
+    //             if (result.return_count())
+    //             {
+    //                 // TODO: This is nasty, gotta be a cleaner way of handling this
+    //                 if (parts[2] == "mobs")
+    //                 {
+    //                     lua[sol::create_if_nil]["tpz"][parts[0]][parts[1]][parts[2]][parts[3]] = result;
+    //                     std::cout << "  - Cached to: " << fmt::format("tpz.{}.{}.{}.{}", parts[0], parts[1], parts[2], parts[3]) << "\n";
+    //                 }
+    //             }
+    //         }
+    //     };
+    //     watch = std::make_unique<filewatch::FileWatch<std::string>>("./scripts/", watchReaction);
+    // }
 
     /************************************************************************
      *                                                                       *
