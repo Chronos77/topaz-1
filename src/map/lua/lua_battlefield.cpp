@@ -198,9 +198,9 @@ bool CLuaBattlefield::loadMobs()
 
 bool CLuaBattlefield::spawnLoot(sol::object const& PEntityObj)
 {
-    auto PEntity = PEntityObj.is<CLuaBaseEntity*>() ? PEntityObj.as<CLuaBaseEntity*>() : nullptr;
+    CBaseEntity* PEntity = PEntityObj.is<CLuaBaseEntity*>() ? PEntityObj.as<CLuaBaseEntity*>()->GetBaseEntity() : nullptr;
 
-    return m_PLuaBattlefield->SpawnLoot(PEntity->GetBaseEntity());
+    return m_PLuaBattlefield->SpawnLoot(PEntity);
 }
 
 std::optional<CLuaBaseEntity> CLuaBattlefield::insertEntity(uint16 targid, bool ally, bool inBattlefield)
