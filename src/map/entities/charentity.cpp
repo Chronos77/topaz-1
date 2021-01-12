@@ -1540,6 +1540,7 @@ void CCharEntity::OnRaise()
     // TODO: Moghancement Experience needs to be factored in here somewhere.
     if (m_hasRaise > 0)
     {
+        bool hasRaiseWithArise = GetLocalVar("hasRaiseWithArise") == 1;
         uint8 weaknessLvl = 1;
         if (StatusEffectContainer->HasStatusEffect(EFFECT_WEAKNESS))
         {
@@ -1550,7 +1551,12 @@ void CCharEntity::OnRaise()
         // add weakness effect (75% reduction in HP/MP)
         if (GetLocalVar("MijinGakure") == 0)
         {
-            CStatusEffect* PWeaknessEffect = new CStatusEffect(EFFECT_WEAKNESS, EFFECT_WEAKNESS, weaknessLvl, 0, 300);
+            uint16 duration = 300;
+            if (hasRaiseWithArise)
+            {
+                duration = 180;
+            }
+            CStatusEffect* PWeaknessEffect = new CStatusEffect(EFFECT_WEAKNESS, EFFECT_WEAKNESS, weaknessLvl, 0, duration);
             StatusEffectContainer->AddStatusEffect(PWeaknessEffect);
         }
 
@@ -1582,11 +1588,16 @@ void CCharEntity::OnRaise()
             hpReturned             = (uint16)((GetLocalVar("MijinGakure") != 0) ? GetMaxHP() * 0.5 : GetMaxHP() * 0.25);
             ratioReturned          = ((GetMLevel() <= 50) ? 0.50f : 0.75f) * (1 - map_config.exp_retain);
         }
-        else if (m_hasRaise == 3)
+        else if (m_hasRaise == 3 || hasRaiseWithArise)
         {
             actionTarget.animation = 496;
             hpReturned             = (uint16)(GetMaxHP() * 0.5);
             ratioReturned          = ((GetMLevel() <= 50) ? 0.50f : 0.90f) * (1 - map_config.exp_retain);
+            if (hasRaiseWithArise) 
+            {
+                CStatusEffect* PReraiseEffect = new CStatusEffect(EFFECT_RERAISE, EFFECT_RERAISE, 3, 0, 3600);
+                StatusEffectContainer->AddStatusEffect(PReraiseEffect);
+            }
         }
         addHP(((hpReturned < 1) ? 1 : hpReturned));
         updatemask |= UPDATE_HP;
@@ -1614,6 +1625,7 @@ void CCharEntity::OnRaise()
         }
 
         SetLocalVar("MijinGakure", 0);
+        SetLocalVar("hasRaiseWithArise", 0);
 
         m_hasRaise = 0;
     }
