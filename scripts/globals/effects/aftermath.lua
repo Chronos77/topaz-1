@@ -5,11 +5,14 @@ require("scripts/globals/aftermath")
 -----------------------------------
 local effect_object = {}
 
-function onEffectGain(target, effect)
+effect_object.onEffectGain = function(target, effect)
     tpz.aftermath.onEffectGain(target, effect)
 end
 
-function onEffectLose(target, effect)
+effect_object.onEffectTick = function(target, effect)
+end
+
+effect_object.onEffectLose = function(target, effect)
     tpz.aftermath.onEffectLose(target, effect)
 end
 
