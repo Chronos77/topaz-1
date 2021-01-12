@@ -1642,12 +1642,13 @@ namespace luautils
 
         std::string name = effects::GetEffectName(PStatusEffect->GetStatusID());
 
+        printf(" %s ", name);
         sol::function onEffectGain;
         if (auto cached_effect = lua["tpz"]["globals"]["effects"][name]; cached_effect.valid())
         {
             onEffectGain = cached_effect["onEffectGain"];
         }
-
+        printf(" %b ", onEffectGain.valid());
         if (!onEffectGain.valid())
         {
             return -1;
