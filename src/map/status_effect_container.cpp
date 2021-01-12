@@ -476,7 +476,7 @@ bool CStatusEffectContainer::AddStatusEffect(CStatusEffect* PStatusEffect, bool 
     }
 
     uint16 statusId = PStatusEffect->GetStatusID();
-
+    ShowInfo("AddStatusEffect statusId %i ", statusId);
     if (statusId >= MAX_EFFECTID)
     {
         ShowWarning("status_effect_container::AddStatusEffect statusId given is OVER limit %d\n", statusId);

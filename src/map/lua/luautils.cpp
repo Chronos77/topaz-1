@@ -1639,16 +1639,17 @@ namespace luautils
     int32 OnEffectGain(CBattleEntity* PEntity, CStatusEffect* PStatusEffect)
     {
         TracyZoneScoped;
-
+        ShowInfo("OnEffectGain PStatusEffect->GetStatusID() %i ", PStatusEffect->GetStatusID());
         std::string name = effects::GetEffectName(PStatusEffect->GetStatusID());
 
-        printf(" %s ", name);
+        ShowInfo("OnEffectGain name %s ", name);
         sol::function onEffectGain;
         if (auto cached_effect = lua["tpz"]["globals"]["effects"][name]; cached_effect.valid())
         {
             onEffectGain = cached_effect["onEffectGain"];
         }
-        printf(" %b ", onEffectGain.valid());
+
+        ShowInfo("OnEffectGain name %s ", onEffectGain.valid() ? "true" : "false");
         if (!onEffectGain.valid())
         {
             return -1;
@@ -1661,7 +1662,7 @@ namespace luautils
             ShowError("luautils::onEffectGain: %s\n", err.what());
             return -1;
         }
-
+        ShowInfo("OnEffectGain return 0 ");
         return 0;
     }
 

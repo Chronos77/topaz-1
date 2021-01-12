@@ -5337,7 +5337,7 @@ void SmallPacket0x0E8(map_session_data_t* const PSession, CCharEntity* const PCh
             {
                 return;
             }
-
+            ShowInfo("ANIMATION_NONE");
             if (PChar->PPet == nullptr ||
                 (PChar->PPet->m_EcoSystem != ECOSYSTEM::AVATAR && PChar->PPet->m_EcoSystem != ECOSYSTEM::ELEMENTAL && !PChar->PAI->IsEngaged()))
             {
@@ -5346,6 +5346,7 @@ void SmallPacket0x0E8(map_session_data_t* const PSession, CCharEntity* const PCh
                 {
                     PChar->PPet->PAI->Disengage();
                 }
+                ShowInfo("AddStatusEffect healing_tick_delay %i ", map_config.healing_tick_delay);
                 PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_HEALING, 0, 0, map_config.healing_tick_delay, 0));
                 return;
             }
