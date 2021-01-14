@@ -24,7 +24,7 @@
 #include "../../common/utils.h"
 
 #include <array>
-// #include <filesystem>
+#include <filesystem>
 #include <optional>
 #include <string>
 #include <unordered_map>
@@ -96,6 +96,14 @@ namespace luautils
 
     bool                                  contentRestrictionEnabled;
     std::unordered_map<std::string, bool> contentEnabledMap;
+
+    std::mutex reloadListBottleneck;
+    std::map<std::string, uint64> toReloadList;
+    void SafeApplyFunc_ReloadList(std::function<void(std::map<std::string, uint64>&)> func)
+    {
+        std::lock_guard bottleneck(reloadListBottleneck);
+        func(toReloadList);
+    }
 
     /************************************************************************
      *                                                                       *
@@ -285,44 +293,74 @@ namespace luautils
         return 0;
     }
 
-    // void EnableFilewatcher()
-    // {
-    //     // Prepare script file watcher
-    //     auto watchReaction = [](const std::filesystem::path& path, const filewatch::Event change_type) {
-    //         // If a Lua file is modified
-    //         if (path.extension() == ".lua" && change_type == filewatch::Event::modified)
-    //         {
-    //             // Split into parts
-    //             std::vector<std::string> parts;
-    //             for (auto part : path)
-    //             {
-    //                 part.replace_extension("");
-    //                 parts.emplace_back(part.string());
-    //             }
+    void EnableFilewatcher()
+    {
+        // Prepare script file watcher
+        auto watchReaction = [](const std::filesystem::path& path, const filewatch::Event change_type) {
+            // If a Lua file is modified
+            if (path.extension() == ".lua" && change_type == filewatch::Event::modified)
+            {
+                auto real_path          = "./scripts/" + path.generic_string();
+                auto modified           = std::filesystem::last_write_time(real_path).time_since_epoch().count();
+                auto modified_timestamp = static_cast<uint64>(modified);
+                SafeApplyFunc_ReloadList([&](std::map<std::string, uint64>& list) {
+                    if (list.find(real_path) == list.end())
+                    {
+                        // No entry, make one
+                        list[real_path] = modified_timestamp;
+                    }
 
-    //             // Loads the script, get the entity
-    //             auto result = lua.safe_script_file("./scripts/" + path.generic_string());
-    //             if (!result.valid())
-    //             {
-    //                 sol::error err = result;
-    //                 std::cout << "  - Error: " << err.what() << "\n";
-    //                 return;
-    //             }
+                    auto last_modified = list.at(real_path);
+                    if (last_modified <= modified_timestamp)
+                    {
+                        list[real_path] = modified_timestamp;
+                    }
+                });
+            }
+        };
+        watch = std::make_unique<filewatch::FileWatch<std::string>>("./scripts/", watchReaction);
+    }
 
-    //             // Update the cache
-    //             if (result.return_count())
-    //             {
-    //                 // TODO: This is nasty, gotta be a cleaner way of handling this
-    //                 if (parts[2] == "mobs")
-    //                 {
-    //                     lua[sol::create_if_nil]["tpz"][parts[0]][parts[1]][parts[2]][parts[3]] = result;
-    //                     std::cout << "  - Cached to: " << fmt::format("tpz.{}.{}.{}.{}", parts[0], parts[1], parts[2], parts[3]) << "\n";
-    //                 }
-    //             }
-    //         }
-    //     };
-    //     watch = std::make_unique<filewatch::FileWatch<std::string>>("./scripts/", watchReaction);
-    // }
+    void ReloadFilewatchList()
+    {
+        SafeApplyFunc_ReloadList([&](std::map<std::string, uint64>& list) {
+            for (auto& [path_string, timestamp] : list)
+            {
+                std::filesystem::path path(path_string);
+
+                // Split into parts
+                std::vector<std::string> parts;
+                for (auto part : path)
+                {
+                    part.replace_extension("");
+                    parts.emplace_back(part.string());
+                }
+
+                // Loads the script, get the entity
+                auto result = lua.safe_script_file(path.generic_string());
+                if (!result.valid())
+                {
+                    sol::error err = result;
+                    std::cout << "  - Error: " << err.what() << "\n";
+                    return;
+                }
+
+                // Update the cache
+                if (result.return_count())
+                {
+                    // TODO: This is nasty, gotta be a cleaner way of handling this
+                    if (parts[4] == "mobs")
+                    {
+                        lua[sol::create_if_nil]["tpz"][parts[2]][parts[3]][parts[4]][parts[5]] = result;
+                        std::cout << "  - Cached to: " << fmt::format("tpz.{}.{}.{}.{}", parts[2], parts[3], parts[4], parts[5]) << "\n";
+                    }
+                }
+            }
+
+            // Erase list
+            list.clear();
+        });
+    }
 
     /************************************************************************
      *                                                                       *
