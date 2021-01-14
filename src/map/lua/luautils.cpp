@@ -73,6 +73,7 @@
 #include "../packets/entity_visual.h"
 #include "../packets/menu_raisetractor.h"
 #include "../party.h"
+#include "../roe.h"
 #include "../spell.h"
 #include "../status_effect_container.h"
 #include "../timetriggers.h"
@@ -217,6 +218,8 @@ namespace luautils
         // TODO: Load these as requires
         lua.script_file("scripts/globals/conquest.lua");
         lua.script_file("scripts/globals/player.lua");
+        roeutils::init();
+        lua.script_file("scripts/globals/roe.lua");
 
         // Handle settings
         contentRestrictionEnabled = GetSettingsVariable("RESTRICT_CONTENT") != 0;
@@ -2167,7 +2170,7 @@ namespace luautils
     int32 OnMobInitialize(CBaseEntity* PMob)
     {
         TracyZoneScoped;
-        
+
         sol::function onMobInitialize = getCachedFunction(PMob, "onMobInitialize");
         if (!onMobInitialize.valid())
         {
