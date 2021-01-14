@@ -117,8 +117,8 @@ namespace luautils
     int32 garbageCollectStep();
     int32 garbageCollectFull();
 
-    void EnableFilewatcher();
-    void ReloadFilewatchList();
+    // void EnableFilewatcher();
+    // void ReloadFilewatchList();
 
     template <typename T>
     void  print(T const& item);
