@@ -144,7 +144,7 @@ int32 time_server(time_point tick, CTaskMgr::CTask* PTask)
 
     instanceutils::CheckInstance();
 
-    luautils::ReloadFilewatchList();
+    // luautils::ReloadFilewatchList();
 
     TracyFrameMark;
     return 0;
