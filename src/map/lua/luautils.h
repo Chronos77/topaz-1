@@ -113,112 +113,29 @@ namespace luautils
     void SafeApplyFunc_ReloadList(std::function<void(std::map<std::string, uint64>&)> func);
 
     int32 init();
-    int32 garbageCollect(); // performs a full garbage collecting cycle
-    int   register_fp(int index);
-    void  unregister_fp(int);
-    int32 print(lua_State*);
-    int32 prepFile(int8*, const char*);
+    int32 garbageCollectStep();
+    int32 garbageCollectFull();
 
-    template <class T, class L>
-    void pushLuaType(T* obj)
-    {
-        Lunar<L>::push(LuaHandle, new L(obj), true);
-    }
+    void EnableFilewatcher();
+    void ReloadFilewatchList();
 
-    // TODO: if the classes themselves held the lua method declarations, this voodoo to get the wrappers wouldn't be needed!
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CBaseEntity* arg)
-    {
-        pushLuaType<CBaseEntity, CLuaBaseEntity>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CAbility* arg)
-    {
-        pushLuaType<CAbility, CLuaAbility>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CMobSkill* arg)
-    {
-        pushLuaType<CMobSkill, CLuaMobSkill>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(action_t* arg)
-    {
-        pushLuaType<action_t, CLuaAction>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CBattlefield* arg)
-    {
-        pushLuaType<CBattlefield, CLuaBattlefield>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CInstance* arg)
-    {
-        pushLuaType<CInstance, CLuaInstance>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CRegion* arg)
-    {
-        pushLuaType<CRegion, CLuaRegion>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CSpell* arg)
-    {
-        pushLuaType<CSpell, CLuaSpell>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CStatusEffect* arg)
-    {
-        pushLuaType<CStatusEffect, CLuaStatusEffect>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CTradeContainer* arg)
-    {
-        pushLuaType<CTradeContainer, CLuaTradeContainer>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CZone* arg)
-    {
-        pushLuaType<CZone, CLuaZone>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_pointer<T>::value> pushArg(CItem* arg)
-    {
-        pushLuaType<CItem, CLuaItem>(arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_integral<T>::value> pushArg(T arg)
-    {
-        lua_pushinteger(LuaHandle, arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_floating_point<T>::value> pushArg(T arg)
-    {
-        lua_pushnumber(LuaHandle, arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_same<bool, T>::value> pushArg(T arg)
-    {
-        lua_pushboolean(LuaHandle, arg);
-    }
-    template <class T>
-    typename std::enable_if_t<std::is_same<std::nullptr_t, T>::value> pushArg(T arg)
-    {
-        lua_pushnil(LuaHandle);
-    }
+    template <typename T>
+    void  print(T const& item);
 
-    void pushFunc(int lua_func, int index = 0);
-    void callFunc(int nargs);
+    auto loadFunctionFromFile(std::string funcName, std::string fileName) -> sol::function;
+    auto getCachedFunction(CBaseEntity* PEntity, std::string funcName) -> sol::function;
 
-    int32 SendEntityVisualPacket(lua_State*); // временное решение для работы гейзеров в Dangruf_Wadi
-    int32 GetNPCByID(lua_State*);             // Returns NPC By Id
-    int32 GetMobByID(lua_State*);             // Returns Mob By Id
-    int32 WeekUpdateConquest(lua_State*);
-    int32 GetRegionOwner(lua_State*);     // узнаем страну, владеющую текущим регионом
-    int32 GetRegionInfluence(lua_State*); // Return influence graphics
-    int32 getNationRank(lua_State* L);
-    int32 getConquestBalance(lua_State* L);
-    int32 isConquestAlliance(lua_State* L);
+    void CacheStatusEffect(std::string name);
+
+    void  SendEntityVisualPacket(uint32 npcid, const char* command);
+    auto  GetNPCByID(uint32 npcid, sol::object const& instanceObj) -> std::optional<CLuaBaseEntity>;
+    auto  GetMobByID(uint32 mobid, sol::object const& instanceObj) -> std::optional<CLuaBaseEntity>;
+    void  WeekUpdateConquest(sol::variadic_args va);
+    uint8 GetRegionOwner(uint8 type);
+    uint8 GetRegionInfluence(uint8 type); // Return influence graphics
+    uint8 GetNationRank(uint8 nation);
+    uint8 GetConquestBalance();
+    bool  IsConquestAlliance();
     int32 SetRegionalConquestOverseers(uint8 regionID); // Update NPC Conquest Guard
 
     uint8 GetHealingTickDelay(); // Returns the configured healing tick delay

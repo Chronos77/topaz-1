@@ -24,7 +24,7 @@
 #include "../../common/utils.h"
 
 #include <array>
-// #include <filesystem>
+#include <filesystem>
 #include <optional>
 #include <string>
 #include <unordered_map>
@@ -99,6 +99,7 @@ namespace luautils
 
     std::mutex reloadListBottleneck;
     std::map<std::string, uint64> toReloadList;
+    std::vector<std::string>      filteredList;
     void SafeApplyFunc_ReloadList(std::function<void(std::map<std::string, uint64>&)> func)
     {
         std::lock_guard bottleneck(reloadListBottleneck);
@@ -244,7 +245,7 @@ namespace luautils
      *                                                                       *
      ************************************************************************/
 
-    int32 garbageCollect()
+    int32 garbageCollectStep()
     {
         TracyZoneScoped;
         TracyReportLuaMemory(LuaHandle);
@@ -281,74 +282,77 @@ namespace luautils
         return 0;
     }
 
-    // void EnableFilewatcher()
-    // {
-    //     // Prepare script file watcher
-    //     auto watchReaction = [](const std::filesystem::path& path, const filewatch::Event change_type) {
-    //         // If a Lua file is modified
-    //         if (path.extension() == ".lua" && change_type == filewatch::Event::modified)
-    //         {
-    //             auto real_path          = "./scripts/" + path.generic_string();
-    //             auto modified           = std::filesystem::last_write_time(real_path).time_since_epoch().count();
-    //             auto modified_timestamp = static_cast<uint64>(modified);
-    //             SafeApplyFunc_ReloadList([&](std::map<std::string, uint64>& list) {
-    //                 if (list.find(real_path) == list.end())
-    //                 {
-    //                     // No entry, make one
-    //                     list[real_path] = modified_timestamp;
-    //                 }
+    void EnableFilewatcher()
+    {
+        // Prepare script file watcher
+        auto watchReaction = [](const std::filesystem::path& path, const filewatch::Event change_type) {
+            // If a Lua file is modified
+            if (path.extension() == ".lua" && change_type == filewatch::Event::modified)
+            {
+                auto real_path          = "./scripts/" + path.generic_string();
+                auto modified           = std::filesystem::last_write_time(real_path).time_since_epoch().count();
+                auto modified_timestamp = static_cast<uint64>(modified);
+                SafeApplyFunc_ReloadList([&](std::map<std::string, uint64>& list) {
+                    if (list.find(real_path) == list.end())
+                    {
+                        // No entry, make one
+                        list[real_path] = modified_timestamp;
+                    }
+                    else
+                    {
+                        auto last_modified = list.at(real_path);
+                        if (last_modified < modified_timestamp)
+                        {
+                            list[real_path] = modified_timestamp;
+                            filteredList.emplace_back(real_path);
+                        }
+                    }
+                });
+            }
+        };
+        watch = std::make_unique<filewatch::FileWatch<std::string>>("./scripts/", watchReaction);
+    }
 
-    //                 auto last_modified = list.at(real_path);
-    //                 if (last_modified <= modified_timestamp)
-    //                 {
-    //                     list[real_path] = modified_timestamp;
-    //                 }
-    //             });
-    //         }
-    //     };
-    //     watch = std::make_unique<filewatch::FileWatch<std::string>>("./scripts/", watchReaction);
-    // }
+    void ReloadFilewatchList()
+    {
+        SafeApplyFunc_ReloadList([&](std::map<std::string, uint64>& list) {
+            for (auto& path_string : filteredList)
+            {
+                std::filesystem::path path(path_string);
 
-    // void ReloadFilewatchList()
-    // {
-    //     SafeApplyFunc_ReloadList([&](std::map<std::string, uint64>& list) {
-    //         for (auto& [path_string, timestamp] : list)
-    //         {
-    //             std::filesystem::path path(path_string);
+                // Split into parts
+                std::vector<std::string> parts;
+                for (auto part : path)
+                {
+                    part.replace_extension("");
+                    parts.emplace_back(part.string());
+                }
 
-    //             // Split into parts
-    //             std::vector<std::string> parts;
-    //             for (auto part : path)
-    //             {
-    //                 part.replace_extension("");
-    //                 parts.emplace_back(part.string());
-    //             }
+                // Loads the script, get the entity
+                auto result = lua.safe_script_file(path.generic_string());
+                if (!result.valid())
+                {
+                    sol::error err = result;
+                    std::cout << "  - Error: " << err.what() << "\n";
+                    return;
+                }
 
-    //             // Loads the script, get the entity
-    //             auto result = lua.safe_script_file(path.generic_string());
-    //             if (!result.valid())
-    //             {
-    //                 sol::error err = result;
-    //                 std::cout << "  - Error: " << err.what() << "\n";
-    //                 return;
-    //             }
+                // Update the cache
+                if (result.return_count())
+                {
+                    // TODO: This is nasty, gotta be a cleaner way of handling this
+                    if (parts[4] == "mobs")
+                    {
+                        lua[sol::create_if_nil]["tpz"][parts[2]][parts[3]][parts[4]][parts[5]] = result;
+                        std::cout << "  - Cached to: " << fmt::format("tpz.{}.{}.{}.{}", parts[2], parts[3], parts[4], parts[5]) << "\n";
+                    }
+                }
+            }
 
-    //             // Update the cache
-    //             if (result.return_count())
-    //             {
-    //                 // TODO: This is nasty, gotta be a cleaner way of handling this
-    //                 if (parts[4] == "mobs")
-    //                 {
-    //                     lua[sol::create_if_nil]["tpz"][parts[2]][parts[3]][parts[4]][parts[5]] = result;
-    //                     std::cout << "  - Cached to: " << fmt::format("tpz.{}.{}.{}.{}", parts[2], parts[3], parts[4], parts[5]) << "\n";
-    //                 }
-    //             }
-    //         }
-
-    //         // Erase list
-    //         list.clear();
-    //     });
-    // }
+            // Erase list
+            filteredList.clear();
+        });
+    }
 
     /************************************************************************
      *                                                                       *
