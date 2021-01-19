@@ -22,7 +22,7 @@ entity.onMobFight = function(mob, target)
     end
 end
 
-function onAdditionalEffect(mob, target, damage)
+entity.onAdditionalEffect = function(mob, target, damage)
     return tpz.mob.onAddEffect(mob, target, damage, tpz.mob.ae.STUN)
 end
 
@@ -31,7 +31,7 @@ entity.onMobDeath = function(mob, player, isKiller)
     player:startEvent(11)
 end
 
-function onEventFinish(player, csid, option)
+entity.onEventFinish = function(player, csid, option)
     if csid == 11 then
         local inst = player:getBattlefield():getArea()
 

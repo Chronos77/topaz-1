@@ -1,8 +1,8 @@
-----------------------------------------
+-----------------------------------
 -- Area: Quicksand Caves
 --  Mob: Honor
 -- Coming of Age (San dOria Mission 8-1)
-----------------------------------------
+-----------------------------------
 require("scripts/globals/missions")
 require("scripts/globals/status")
 -----------------------------------
@@ -12,7 +12,7 @@ entity.onMobInitialize = function(mob)
     mob:setMobMod(tpz.mobMod.IDLE_DESPAWN, 180)
 end
 
-function onMobSpawn(mob)
+entity.onMobSpawn = function(mob)
     DespawnMob(mob:getID(), 180)
     mob:addMod(tpz.mod.SLEEPRES, 50)
     mob:addMod(tpz.mod.LULLABYRES, 50)

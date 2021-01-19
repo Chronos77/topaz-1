@@ -4,7 +4,7 @@
 -----------------------------------
 local entity = {}
 
-function onMobEngaged(mob, target)
+entity.onMobEngaged = function(mob, target)
     local bcnmAllies = mob:getBattlefield():getAllies()
     for i, v in pairs(bcnmAllies) do
         if v:getName() == "Karababa" then
@@ -19,11 +19,11 @@ end
 entity.onMobDeath = function(mob, player, isKiller)
 end
 
-function onEventUpdate(player, csid, option)
+entity.onEventUpdate = function(player, csid, option)
     -- printf("updateCSID: %u", csid)
 end
 
-function onEventFinish(player, csid, option, target)
+entity.onEventFinish = function(player, csid, option, target)
     -- printf("finishCSID: %u", csid)
 end
 

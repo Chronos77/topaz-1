@@ -1,14 +1,14 @@
-----------------------------------------
+-----------------------------------
 -- Area: Full Moon Fountain
 --  Mob: Tatzlwurm
 -- Windurst Mission 9-2
-----------------------------------------
+-----------------------------------
 require("scripts/globals/status")
 local ID = require("scripts/zones/Full_Moon_Fountain/IDs")
 -----------------------------------
 local entity = {}
 
-function onMobSpawn(mob)
+entity.onMobSpawn = function(mob)
     local battlefield = mob:getBattlefield()
     local inst = battlefield:getArea()
     local instOffset = ID.mob.MOON_READING_OFFSET + (6 * (inst - 1))

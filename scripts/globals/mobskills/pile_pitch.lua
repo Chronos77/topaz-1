@@ -1,17 +1,18 @@
----------------------------------------------------
+-----------------------------------
 --  Pile Pitch
 --
 --  Description:  Reduces target's HP to 5% of its maximum value, ignores Utsusemi  , Bind (30 sec)
 --  Type: Magical
 --
----------------------------------------------------
+-----------------------------------
 require("scripts/globals/settings")
 require("scripts/globals/status")
 require("scripts/globals/monstertpmoves")
 
----------------------------------------------------
+-----------------------------------
+local mobskill_object = {}
 
-function onMobSkillCheck(target, mob, skill)
+mobskill_object.onMobSkillCheck = function(target, mob, skill)
     -- skillList  54 = Omega
     -- skillList 727 = Proto-Omega
     -- skillList 728 = Ultima
@@ -26,7 +27,7 @@ function onMobSkillCheck(target, mob, skill)
     end
 end
 
-function onMobWeaponSkill(target, mob, skill)
+mobskill_object.onMobWeaponSkill = function(target, mob, skill)
     local currentHP = target:getHP()
     local damage = currentHP * .90
     local typeEffect = tpz.effect.BIND
@@ -36,3 +37,4 @@ function onMobWeaponSkill(target, mob, skill)
     mob:resetEnmity(target)
     return dmg
 end
+return mobskill_object

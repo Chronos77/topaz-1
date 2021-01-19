@@ -11,11 +11,12 @@ require("scripts/globals/keyitems")
 require("scripts/globals/quests")
 local ID = require("scripts/zones/Northern_San_dOria/IDs")
 -----------------------------------
+local entity = {}
 
-function onTrade(player, npc, trade)
+entity.onTrade = function(player, npc, trade)
 end
 
-function onTrigger(player, npc)
+entity.onTrigger = function(player, npc)
 
     local TrialByIce = player:getQuestStatus(tpz.quest.log_id.SANDORIA, tpz.quest.id.sandoria.TRIAL_BY_ICE)
     local WhisperOfFrost = player:hasKeyItem(tpz.ki.WHISPER_OF_FROST)
@@ -23,13 +24,13 @@ function onTrigger(player, npc)
     local ClassReunion = player:getQuestStatus(tpz.quest.log_id.WINDURST, tpz.quest.id.windurst.CLASS_REUNION)
     local ClassReunionProgress = player:getCharVar("ClassReunionProgress")
 
-    ------------------------------------------------------------
+    -----------------------------------
     -- Class Reunion
     if (ClassReunion == 1 and ClassReunionProgress == 4) then
         player:startEvent(713, 0, 1171, 0, 0, 0, 0, 0, 0) -- he gives you an ice pendulum and wants you to go to Cloister of Frost
     elseif (ClassReunion == 1 and ClassReunionProgress == 5 and player:hasItem(1171) == false) then
         player:startEvent(712, 0, 1171, 0, 0, 0, 0, 0, 0) -- lost the ice pendulum need another one
-    ------------------------------------------------------------
+    -----------------------------------
     elseif ((TrialByIce == QUEST_AVAILABLE and player:getFameLevel(SANDORIA) >= 6) or (TrialByIce == QUEST_COMPLETED and realday ~= player:getCharVar("TrialByIce_date"))) then
         player:startEvent(706, 0, tpz.ki.TUNING_FORK_OF_ICE) -- Start and restart quest "Trial by ice"
     elseif (TrialByIce == QUEST_ACCEPTED and player:hasKeyItem(tpz.ki.TUNING_FORK_OF_ICE) == false and WhisperOfFrost == false) then
@@ -52,10 +53,10 @@ function onTrigger(player, npc)
 
 end
 
-function onEventUpdate(player, csid, option)
+entity.onEventUpdate = function(player, csid, option)
 end
 
-function onEventFinish(player, csid, option)
+entity.onEventFinish = function(player, csid, option)
 
     if (csid == 706 and option == 1) then
         if (player:getQuestStatus(tpz.quest.log_id.SANDORIA, tpz.quest.id.sandoria.TRIAL_BY_ICE) == QUEST_COMPLETED) then
@@ -106,3 +107,5 @@ function onEventFinish(player, csid, option)
     end
 
 end
+
+return entity

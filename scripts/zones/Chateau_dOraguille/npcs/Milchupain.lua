@@ -5,12 +5,13 @@
 -----------------------------------
 local ID = require("scripts/zones/Chateau_dOraguille/IDs")
 -----------------------------------
+local entity = {}
 
-function onTrade(player, npc, trade)
+entity.onTrade = function(player, npc, trade)
 end
 
-function onTrigger(player, npc)
-    
+entity.onTrigger = function(player, npc)
+
     -- This NPC is relevant only to San d'Orians on missions
     if player:getNation() ~= tpz.nation.SANDORIA then
         player:startEvent(516)
@@ -36,7 +37,7 @@ function onTrigger(player, npc)
             player:showText(npc, ID.text.LIGHTBRINGER_EXTRA + 3)
         elseif currentMission == sandyMissions.LIGHTBRINGER and missionStatus == 6 then
             player:startEvent(36)
-        
+
         -- San d'Oria 5-2 "The Shadow Lord" (optional)
         elseif
             -- Directly after winning BCNM and up until next mission
@@ -52,8 +53,10 @@ function onTrigger(player, npc)
     end
 end
 
-function onEventUpdate(player, csid, option)
+entity.onEventUpdate = function(player, csid, option)
 end
 
-function onEventFinish(player, csid, option)
+entity.onEventFinish = function(player, csid, option)
 end
+
+return entity

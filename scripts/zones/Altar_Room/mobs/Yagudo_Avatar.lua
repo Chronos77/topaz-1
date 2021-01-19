@@ -1,5 +1,5 @@
 -----------------------------------
--- Area: Altar Room 
+-- Area: Altar Room
 -----------------------------------
 local ID = require("scripts/zones/Altar_Room/IDs")
 mixins = {require("scripts/mixins/job_special")}
@@ -7,7 +7,7 @@ require("scripts/globals/mobs")
 -----------------------------------
 local entity = {}
 
-function onMobSpawn(mob)
+entity.onMobSpawn = function(mob)
 end
 
 entity.onMobDeath = function(mob, player, isKiller)
@@ -21,7 +21,7 @@ entity.onMobDeath = function(mob, player, isKiller)
     end
 end
 
-function onMobDespawn(mob)
+entity.onMobDespawn = function(mob)
     for i = ID.mob.YAGUDO_AVATAR + 1, ID.mob.YAGUDO_AVATAR + 8 do
         DespawnMob(i)
     end

@@ -11,8 +11,9 @@ require("scripts/globals/settings")
 require("scripts/globals/quests")
 require("scripts/globals/titles")
 -----------------------------------
+local entity = {}
 
-function onTrade(player, npc, trade)
+entity.onTrade = function(player, npc, trade)
     local qStarStruck = player:getQuestStatus(tpz.quest.log_id.WINDURST, tpz.quest.id.windurst.STAR_STRUCK)
     local count = trade:getItemCount()
 
@@ -54,7 +55,7 @@ function onTrade(player, npc, trade)
     end
 end
 
-function onTrigger(player, npc)
+entity.onTrigger = function(player, npc)
     local qStarStruck = player:getQuestStatus(tpz.quest.log_id.WINDURST, tpz.quest.id.windurst.STAR_STRUCK)
     local blastFromPast = player:getQuestStatus(tpz.quest.log_id.WINDURST, tpz.quest.id.windurst.BLAST_FROM_THE_PAST)
     local blastProg = player:getCharVar("BlastFromThePast_Prog")
@@ -89,7 +90,7 @@ function onTrigger(player, npc)
         player:startEvent(198)
     elseif ((qStarStruck == QUEST_AVAILABLE) and (ClassReunion ~= QUEST_ACCEPTED) and player:hasItem(584)) then
         player:startEvent(197)
-    ----------------------------------------------------------
+    -----------------------------------
     -- Carbuncle Debacle
     elseif (CarbuncleDebacle == QUEST_ACCEPTED and CarbuncleDebacleProgress == 1 or CarbuncleDebacleProgress == 2) then
         player:startEvent(416) -- go and see Ripapa
@@ -101,7 +102,7 @@ function onTrigger(player, npc)
         player:startEvent(419) -- ending cs
     elseif (ThePuppetMaster == QUEST_COMPLETED and ClassReunion == QUEST_COMPLETED and CarbuncleDebacle == QUEST_COMPLETED) then
         player:startEvent(420) -- new cs after all 3 SMN AFs done
-    ----------------------------------------------------------
+    -----------------------------------
     -- Class Reunion
     elseif (ClassReunion == QUEST_ACCEPTED and ClassReunionProgress == 1) then
         player:startEvent(412, 0, 450, 17299, 0, 0, 0, 0, 0) -- bring Koru 4 astragaloi
@@ -113,13 +114,13 @@ function onTrigger(player, npc)
             player:startEvent(410) -- ending cs
     elseif (ThePuppetMaster == QUEST_COMPLETED and ClassReunion == QUEST_COMPLETED) then
         player:startEvent(411) -- new cs after completed AF2
-    ----------------------------------------------------------
+    -----------------------------------
     -- The Puppet Master
     elseif (ThePuppetMaster == QUEST_ACCEPTED and ThePuppetMasterProgress == 4) then
         player:startEvent(404) -- ending cs
     elseif (ThePuppetMaster == QUEST_COMPLETED and ClassReunion ~= 2) then
         player:startEvent(405) -- new cs after completed AF1
-    ----------------------------------------------------------
+    -----------------------------------
     elseif (rootProblem == QUEST_ACCEPTED and player:getCharVar("rootProblem") == 1) then
         player:startEvent(348, 0, 829)
     else
@@ -131,10 +132,10 @@ function onTrigger(player, npc)
     end
 end
 
-function onEventUpdate(player, csid, option)
+entity.onEventUpdate = function(player, csid, option)
 end
 
-function onEventFinish(player, csid, option)
+entity.onEventFinish = function(player, csid, option)
 
     if (csid == 285) then  -- Giving him KI from Principle
         player:tradeComplete()
@@ -215,3 +216,5 @@ function onEventFinish(player, csid, option)
         end
     end
 end
+
+return entity

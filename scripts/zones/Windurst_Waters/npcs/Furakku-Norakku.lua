@@ -10,11 +10,12 @@ require("scripts/globals/keyitems")
 require("scripts/globals/titles")
 require("scripts/globals/quests")
 -----------------------------------
+local entity = {}
 
-function onTrade(player, npc, trade)
+entity.onTrade = function(player, npc, trade)
 end
 
-function onTrigger(player, npc)
+entity.onTrigger = function(player, npc)
 
     local bookwormStatus = player:getQuestStatus(tpz.quest.log_id.WINDURST, tpz.quest.id.windurst.EARLY_BIRD_CATCHES_THE_BOOKWORM)
     local chasingStatus = player:getQuestStatus(tpz.quest.log_id.WINDURST, tpz.quest.id.windurst.CHASING_TALES)
@@ -43,20 +44,20 @@ function onTrigger(player, npc)
         player:startEvent(410)
     elseif (chasingStatus == QUEST_COMPLETED and player:needToZone() == true) then
         player:startEvent(411)
-    -----------------------------------------------------------------
+    -----------------------------------
     -- Class Reunion
     elseif (ClassReunion == 1 and ClassReunionProgress >= 3 and talk2 ~= 1) then
         player:startEvent(816) -- he tells you about Uran-Mafran
-    -----------------------------------------------------------------
+    -----------------------------------
     else
         player:startEvent(371)
     end
 end
 
-function onEventUpdate(player, csid, option)
+entity.onEventUpdate = function(player, csid, option)
 end
 
-function onEventFinish(player, csid, option)
+entity.onEventFinish = function(player, csid, option)
 
     if (csid == 389) then
         player:addKeyItem(tpz.ki.OVERDUE_BOOK_NOTIFICATIONS)
@@ -86,3 +87,5 @@ function onEventFinish(player, csid, option)
         player:setCharVar("ClassReunion_TalkedToFurakku", 1)
     end
 end
+
+return entity

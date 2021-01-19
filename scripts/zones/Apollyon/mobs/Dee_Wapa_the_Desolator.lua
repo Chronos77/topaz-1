@@ -6,11 +6,11 @@ local ID = require("scripts/zones/Apollyon/IDs")
 -----------------------------------
 local entity = {}
 
-function onMobSpawn(mob)
+entity.onMobSpawn = function(mob)
     mob:setMobMod(tpz.mobMod.SUPERLINK, mob:getShortID())
 end
 
-function onMobEngaged(mob, target)
+entity.onMobEngaged = function(mob, target)
     local battlefield = mob:getBattlefield()
     if battlefield:getLocalVar("startTime") == 0 then
         battlefield:setLocalVar("startTime", battlefield:getRemainingTime())
@@ -30,7 +30,7 @@ entity.onMobFight = function(mob, target)
         local remainingTime = battlefield:getRemainingTime()
         local startTime = battlefield:getLocalVar("startTime")
         local wave = mob:getLocalVar("wave")
-    
+
         if GetMobByID(ID.mob.APOLLYON_CS_MOB[3]+3):isDead() and GetMobByID(ID.mob.APOLLYON_CS_MOB[3]+4):isDead()
             and GetMobByID(ID.mob.APOLLYON_CS_MOB[3]+5):isDead() and wave == 1
         then
@@ -58,7 +58,7 @@ entity.onMobFight = function(mob, target)
             GetMobByID(ID.mob.APOLLYON_CS_MOB[3]+5):setPos(mobX, mobY, mobZ)
             SpawnMob(ID.mob.APOLLYON_CS_MOB[3]+5):setMobMod(tpz.mobMod.SUPERLINK, mob:getShortID())
         end
-    
+
         if remainingTime <= startTime*0.66 then
             if GetMobByID(ID.mob.APOLLYON_CS_MOB[2]):isAlive() and not GetMobByID(ID.mob.APOLLYON_CS_MOB[2]):isEngaged() then
                 battlefield:setLocalVar("startTime", battlefield:getRemainingTime())

@@ -1,12 +1,12 @@
-----------------------------------------
+-----------------------------------
 -- Area: Phomiuna_Aqueducts
 --  Mob: Teratotaur
-----------------------------------------
+-----------------------------------
 mixins = {require("scripts/mixins/fomor_hate")}
 -----------------------------------
 local entity = {}
 
-function onMobSpawn(mob)
+entity.onMobSpawn = function(mob)
     mob:setLocalVar("fomorHateAdj", -1)
 end
 

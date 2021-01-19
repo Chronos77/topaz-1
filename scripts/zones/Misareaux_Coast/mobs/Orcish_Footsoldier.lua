@@ -1,12 +1,12 @@
-----------------------------------------
+-----------------------------------
 -- Area: Misareaux_Coast
 --  Mob: Orcish Footsoldier
-----------------------------------------
+-----------------------------------
 mixins = {require("scripts/mixins/fomor_hate")}
 -----------------------------------
 local entity = {}
 
-function onMobSpawn(mob)
+entity.onMobSpawn = function(mob)
     mob:setLocalVar("fomorHateAdj", -1)
 end
 

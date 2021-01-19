@@ -12,8 +12,9 @@ require("scripts/globals/keyitems")
 require("scripts/globals/missions")
 require("scripts/globals/quests")
 -----------------------------------
+local entity = {}
 
-function onTrade(player, npc, trade)
+entity.onTrade = function(player, npc, trade)
 
     if (player:getQuestStatus(tpz.quest.log_id.WINDURST, tpz.quest.id.windurst.MAKING_AMENDS) == QUEST_ACCEPTED) then
         if (trade:hasItemQty(937, 1) and trade:getItemCount() == 1) then
@@ -35,7 +36,7 @@ function onTrade(player, npc, trade)
 
 end
 
-function onTrigger(player, npc)
+entity.onTrigger = function(player, npc)
 
     MakingAmends = player:getQuestStatus(tpz.quest.log_id.WINDURST, tpz.quest.id.windurst.MAKING_AMENDS)
     MakingAmens = player:getQuestStatus(tpz.quest.log_id.WINDURST, tpz.quest.id.windurst.MAKING_AMENS) --Second quest in series
@@ -43,7 +44,7 @@ function onTrigger(player, npc)
     needToZone = player:needToZone()
     pFame = player:getFameLevel(WINDURST)
 
-        -- ~[ Windurst Mission 6-1 Full Moon Fountain ]~ --
+        -- ~[ Windurst Mission 6-1 Full Moon Fountain ]~
     if (player:getCurrentMission(WINDURST) == tpz.mission.id.windurst.FULL_MOON_FOUNTAIN and player:getCharVar("MissionStatus") == 0) then
         player:startEvent(456, 0, 248)
     elseif (player:getCurrentMission(WINDURST) == tpz.mission.id.windurst.FULL_MOON_FOUNTAIN and player:getCharVar("MissionStatus") == 3) then
@@ -84,10 +85,10 @@ function onTrigger(player, npc)
 -- End Wonder Wands Section
 end
 
-function onEventUpdate(player, csid, option)
+entity.onEventUpdate = function(player, csid, option)
 end
 
-function onEventFinish(player, csid, option)
+entity.onEventFinish = function(player, csid, option)
 
     if (csid == 90) then
         player:setCharVar("MissionStatus", 1)
@@ -172,7 +173,7 @@ function onEventFinish(player, csid, option)
             player:addTitle(tpz.title.DOCTOR_SHANTOTTOS_GUINEA_PIG)
             player:completeQuest(tpz.quest.log_id.WINDURST, tpz.quest.id.windurst.WONDER_WANDS)
         end
-        -- ~[ Windurst Mission 6-1 Full Moon Fountain ]~ --
+        -- ~[ Windurst Mission 6-1 Full Moon Fountain ]~
     elseif (csid == 456) then
             player:setCharVar("MissionStatus", 1)
             player:addKeyItem(tpz.ki.SOUTHWESTERN_STAR_CHARM)
@@ -180,3 +181,5 @@ function onEventFinish(player, csid, option)
     end
 
 end
+
+return entity

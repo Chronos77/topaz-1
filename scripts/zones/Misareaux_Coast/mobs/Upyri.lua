@@ -1,4 +1,4 @@
-----------------------------------------
+-----------------------------------
 -- Area: Misareaux Coast
 --   NM: Upyri
 -- NOTES/TO DO: Tends to use weapon skills twice in a row during night time, based on retail testing.
@@ -13,7 +13,7 @@ local entity = {}
 entity.onMobDeath = function(mob, player, isKiller)
 end
 
-function onMobDespawn(mob)
+entity.onMobDespawn = function(mob)
     mob:setRespawnTime(math.random(75600, 86400))   -- 21 to 24 hr
 end
 

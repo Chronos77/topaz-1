@@ -1,14 +1,15 @@
----------------------------------------------
+-----------------------------------
 -- Horrid Roar (Fafnir, Cynoprosopi, Smok)
 -- Dispels a single buff at random which could be food.  Lowers Enmity.
----------------------------------------------
+-----------------------------------
 require("scripts/globals/monstertpmoves")
 require("scripts/globals/settings")
 require("scripts/globals/status")
 require("scripts/globals/msg")
----------------------------------------------
+-----------------------------------
+local mobskill_object = {}
 
-function onMobSkillCheck(target, mob, skill)
+mobskill_object.onMobSkillCheck = function(target, mob, skill)
     if not target:isInfront(mob, 128) then
         return 1
     elseif mob:getAnimationSub() == 1 then
@@ -17,7 +18,7 @@ function onMobSkillCheck(target, mob, skill)
     return 0
 end
 
-function onMobWeaponSkill(target, mob, skill)
+mobskill_object.onMobWeaponSkill = function(target, mob, skill)
     local dispel = target:dispelStatusEffect(bit.bor(tpz.effectFlag.DISPELABLE, tpz.effectFlag.FOOD))
 
     if dispel == tpz.effect.NONE then
@@ -31,3 +32,5 @@ function onMobWeaponSkill(target, mob, skill)
 
     return dispel
 end
+
+return mobskill_object

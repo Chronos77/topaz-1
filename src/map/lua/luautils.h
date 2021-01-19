@@ -120,12 +120,13 @@ namespace luautils
     void ReloadFilewatchList();
 
     template <typename T>
-    void  print(T const& item);
+    void print(T const& item);
 
-    auto loadFunctionFromFile(std::string funcName, std::string fileName) -> sol::function;
-    auto getCachedFunction(CBaseEntity* PEntity, std::string funcName) -> sol::function;
-
-    void CacheStatusEffect(std::string name);
+    // Cache helpers
+    auto getEntityCachedFunction(CBaseEntity* PEntity, std::string funcName) -> sol::function;
+    void CacheLuaObjectFromFile(std::string filename);
+    auto GetCacheEntryFromFilename(std::string filename) -> sol::table;
+    void OnEntityLoad(CBaseEntity* PEntity);
 
     void  SendEntityVisualPacket(uint32 npcid, const char* command);
     auto  GetNPCByID(uint32 npcid, sol::object const& instanceObj) -> std::optional<CLuaBaseEntity>;
@@ -224,7 +225,6 @@ namespace luautils
     int32 OnMagicHit(CBattleEntity* PCaster, CBattleEntity* PTarget, CSpell* PSpell);                      // triggered when spell cast on monster
     int32 OnWeaponskillHit(CBattleEntity* PMob, CBaseEntity* PAttacker, uint16 PWeaponskill);              // Triggered when Weaponskill strikes monster
 
-    void  OnMobLoad(CBaseEntity* PMob);
     int32 OnMobInitialize(CBaseEntity* PMob); // Used for passive trait
     int32 ApplyMixins(CBaseEntity* PMob);
     int32 ApplyZoneMixins(CBaseEntity* PMob);
