@@ -1,0 +1,1 @@
+ssh -i "~/.ssh/ffxi_server.pem" ec2-user@ec2-54-217-49-133.eu-west-1.compute.amazonaws.com
