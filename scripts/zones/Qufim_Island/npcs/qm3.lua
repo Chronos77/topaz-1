@@ -32,7 +32,7 @@ entity.onTrigger = function(player, npc)
             player:startEvent(32)
         elseif missionACP == tpz.mission.id.acp.GATHERER_OF_LIGHT_II and player:getCharVar("SEED_MANDY") == 0 then
             -- Spawn Seed mandragora's
-            player:setCharVar("SEED_MANDY", 1) -- This will need moved into Seed mandies onDeath script later.
+            -- player:setCharVar("SEED_MANDY", 1) -- This will need moved into Seed mandies onDeath script later.
             player:PrintToPlayer( "Confrontation Battles are not working yet." )
             -- tpz.effect.CONFRONTATION for 30 min
         elseif missionACP == tpz.mission.id.acp.GATHERER_OF_LIGHT_II and player:getCharVar("SEED_MANDY") == 1 then -- change SEED_MANDY var number later when battle actually works (intended purpose is to track number of slain mandies).

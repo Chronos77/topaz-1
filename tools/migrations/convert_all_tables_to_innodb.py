@@ -8,7 +8,7 @@ def check_preconditions(cur):
 	return
 
 def needs_to_run(cur):
-	cur.execute("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'tpzdb' AND ENGINE = 'MyISAM' LIMIT 1")
+	cur.execute("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'tpzfleme' AND ENGINE = 'MyISAM' LIMIT 1")
 	if cur.fetchone():
 		return True
 	return False
