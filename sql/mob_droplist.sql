@@ -16680,6 +16680,17 @@ INSERT INTO `mob_droplist` VALUES (3163,0,0,1000,3376,100); -- Snarled Goad on S
 INSERT INTO `mob_droplist` VALUES (3164,0,0,1000,3377,100); -- Ethereal Goad on Satellite Guns
 INSERT INTO `mob_droplist` VALUES (3165,0,0,1000,3378,100); -- Mysterial Goad on Satellite Horns
 INSERT INTO `mob_droplist` VALUES (3166,0,0,1000,3379,100); -- Supernal Goad on Satellite Shield
+-- Dynamis - Xarcabard -> Arch Dynamis Lord
+INSERT INTO `mob_droplist` VALUES (3167,0,0,1000,3502,1000);-- Umbral Marrow
+INSERT INTO `mob_droplist` VALUES (3167,0,0,1000,3502,50);  -- Umbral Marrow
+INSERT INTO `mob_droplist` VALUES (3167,0,0,1000,17669,5);  -- Sagasinger
+INSERT INTO `mob_droplist` VALUES (3167,0,0,1000,18903,100);-- Talekeeper
+INSERT INTO `mob_droplist` VALUES (3167,0,0,1000,10975,150);-- Archon Cape
+INSERT INTO `mob_droplist` VALUES (3167,0,0,1000,11674,150);-- Archon Ring
+INSERT INTO `mob_droplist` VALUES (3167,0,0,1000,1450,10); -- L. Jadeshell
+INSERT INTO `mob_droplist` VALUES (3167,0,0,1000,1453,10); -- M. Silverpiece
+INSERT INTO `mob_droplist` VALUES (3167,0,0,1000,1456,10); -- 100 Byne Bill
+
 
 /*!40000 ALTER TABLE `mob_droplist` ENABLE KEYS */;
 UNLOCK TABLES;
