@@ -358,8 +358,11 @@ end
 
 tpz.magian.magianOnTrigger = function(player, npc, EVENT_IDS)
     local p, t = parseParams(player)
-
-    if EVENT_IDS[1] and player:getMainLvl() < 75 then
+    if EVENT_IDS[10] and player:getMainLvl() < 30 then -- Green Magian
+        player:startEvent(EVENT_IDS[10])
+    elseif EVENT_IDS[11] and player:getCharVar("MetGreenMagianMog") == 0 and not player:hasKeyItem(tpz.ki.MAGIAN_LEARNERS_LOG) then
+        player:startEvent(EVENT_IDS[11])
+    elseif EVENT_IDS[1] and player:getMainLvl() < 75 then
         player:startEvent(EVENT_IDS[1]) -- can't take a trial before lvl 75
 
     elseif player:hasKeyItem(tpz.ki.MAGIAN_TRIAL_LOG) == false then
@@ -521,7 +524,11 @@ tpz.magian.magianOnEventFinish = function(player, itemId, csid, option, EVENT_ID
     local msg = zones[zoneid].text
     local ID = require("scripts/zones/RuLude_Gardens/IDs")
 
-    if csid == EVENT_IDS[2] and option == 1 then
+    if (EVENT_IDS[0] and csid == EVENT_IDS[0] and option == 1 and not player:hasKeyItem(tpz.ki.MAGIAN_TRIAL_LOG)) then
+        player:messageSpecial(ID.text.KEYITEM_OBTAINED, tpz.ki.MAGIAN_LEARNERS_LOG)
+        player:addKeyItem(tpz.ki.MAGIAN_LEARNERS_LOG)
+        player:setCharVar("MetGreenMagianMog", 1)
+    elseif csid == EVENT_IDS[2] and option == 1 then
         player:messageSpecial(ID.text.KEYITEM_OBTAINED,tpz.ki.MAGIAN_TRIAL_LOG)
         player:addKeyItem(tpz.ki.MAGIAN_TRIAL_LOG)
 
