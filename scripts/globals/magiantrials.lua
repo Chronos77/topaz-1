@@ -524,7 +524,7 @@ tpz.magian.magianOnEventFinish = function(player, itemId, csid, option, EVENT_ID
     local msg = zones[zoneid].text
     local ID = require("scripts/zones/RuLude_Gardens/IDs")
 
-    if (EVENT_IDS[0] and csid == EVENT_IDS[0] and option == 1 and not player:hasKeyItem(tpz.ki.MAGIAN_TRIAL_LOG)) then
+    if (EVENT_IDS[11] and csid == EVENT_IDS[11] and option == 1 and not player:hasKeyItem(tpz.ki.MAGIAN_TRIAL_LOG)) then
         player:messageSpecial(ID.text.KEYITEM_OBTAINED, tpz.ki.MAGIAN_LEARNERS_LOG)
         player:addKeyItem(tpz.ki.MAGIAN_LEARNERS_LOG)
         player:setCharVar("MetGreenMagianMog", 1)
@@ -589,11 +589,4 @@ tpz.magian.magianOnEventFinish = function(player, itemId, csid, option, EVENT_ID
         player:messageSpecial(msg.ITEM_OBTAINED, t.rewardItem)
         player:setLocalVar("storeTrialId", 0)
     end
-end
-
------------------------------------
--- Magian Green
------------------------------------
-
-function magianGreenEventUpdate(player, ItemID, csid, option)
 end
