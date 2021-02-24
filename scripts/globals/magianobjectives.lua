@@ -170,6 +170,28 @@ tpz.magian.trials =
 [ 898] = { check = checks.checkTrials, reqs = { mobid = set{ 17334552, 17338598 } } }, -- Feuerunke
 [1758] = { check = checks.checkTrials, reqs = { mobid = set{ 17195484 } } }, -- Tammuz
 
+-- Torque (Green magian)
+[4424] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1018 } } }, -- Shaman Garlic
+[4425] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 541 } } },  -- Dhalmel Saliva
+[4426] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1662 } } }, -- Ctdl. Tapestry
+[4427] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 538 } } },  -- Magicked Skull
+[4428] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 540 } } },  -- Bloody Robe
+[4429] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 934 } } },  -- Yuhtunga Sulfur
+[4430] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 503 } } },  -- Valkurm Sunsand
+[4431] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 586 } } },  -- Odd Postcard
+[4432] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 542 } } },  -- Wild Rabbit Tail
+[4433] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 576 } } },  -- Siren's Tear
+[4434] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 2742 } } }, -- Seedspall Astrum
+[4435] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 539 } } },  -- Crab Apron
+[4436] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1707 } } }, -- Eastern Paper
+[4437] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 537 } } },  -- Damselfly Worm
+[4438] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 587 } } },  -- Damp Envelope
+[4439] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 4368 } } }, -- Two-Leaf Mandragora Bud
+[4440] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1708 } } }, -- Counterfeit Gil
+[4441] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 1706 } } }, -- Nyumomo Doll
+[4442] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 584 } } },  -- Torn Epistle
+[4443] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 530 } } },  -- Castle Floor Plans
+
 -- Relic Weapon
 -- Spharai
 [1003] = { check = checks.checkTrials, reqs = { killWithWs=false, wSkill = set{ tpz.weaponskill.FINAL_HEAVEN }, mobSystem = set{ tpz.eco.VERMIN } } },  -- 75 -> 75 DMG+2
@@ -681,9 +703,6 @@ tpz.magian.trials =
 --- Feet
 [4682] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 3497 } } }, -- NQ Forgotten Steps x50
 [4683] = { check = checks.checkTradeTrials, reqs = { itemId = set{ 3497 } } }, -- HQ Forgotten Steps x30
-
-
-
 
 -- Abyssean Armor
 -- Unkai Kote

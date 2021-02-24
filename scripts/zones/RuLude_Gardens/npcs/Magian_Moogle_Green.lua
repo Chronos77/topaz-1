@@ -28,7 +28,7 @@ entity.onTrigger = function(player, npc)
         return
     end
 
-    tpz.magian.magianOnTrigger(player, itemId, csid, option, EVENT_IDS)
+    tpz.magian.magianOnTrigger(player, npc, EVENT_IDS)
 end
 
 entity.onEventUpdate = function(player,csid,option)

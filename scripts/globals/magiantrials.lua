@@ -353,19 +353,19 @@ tpz.magian.checkMagianTrial = function(player, conditions)
 end
 
 -----------------------------------
--- Magian Orange / Blue
+-- Magian Orange / Blue / Green
 -----------------------------------
 
 tpz.magian.magianOnTrigger = function(player, npc, EVENT_IDS)
     local p, t = parseParams(player)
     if EVENT_IDS[10] and player:getMainLvl() < 30 then -- Green Magian
         player:startEvent(EVENT_IDS[10])
-    elseif EVENT_IDS[11] and player:getCharVar("MetGreenMagianMog") == 0 and not player:hasKeyItem(tpz.ki.MAGIAN_LEARNERS_LOG) then
+    elseif EVENT_IDS[11] and player:getCharVar("MetGreenMagianMog") == 0 and not player:hasKeyItem(tpz.ki.MAGIAN_LEARNERS_LOG) and not player:hasKeyItem(tpz.ki.MAGIAN_TRIAL_LOG) then
         player:startEvent(EVENT_IDS[11])
     elseif EVENT_IDS[1] and player:getMainLvl() < 75 then
         player:startEvent(EVENT_IDS[1]) -- can't take a trial before lvl 75
 
-    elseif player:hasKeyItem(tpz.ki.MAGIAN_TRIAL_LOG) == false then
+    elseif not player:hasKeyItem(tpz.ki.MAGIAN_TRIAL_LOG) then
         player:startEvent(EVENT_IDS[2]) -- player can start magian for the first time
 
     else
@@ -390,9 +390,11 @@ tpz.magian.magianOnTrade = function(player, npc, trade, TYPE, EVENT_IDS)
             player:setLocalVar("invalidItem", 1)
             player:startEvent(EVENT_IDS[4], 0, 0, 0, 0, 0, 0, 0, utils.MAX_UINT32) -- invalid weapon
             return
-
-        -- player can only keep 10 trials at once
-        elseif pt >= 10 and trialId == 0 then
+        elseif EVENT_IDS[10] and item:getSlotID() ~= tpz.slot.NECK then -- green magian
+            player:setLocalVar("invalidItem", 1)
+            player:startEvent(EVENT_IDS[4], 0, 0, 0, 0, 0, 0, 0, utils.MAX_UINT32) -- invalid weapon
+            return
+        elseif pt >= 10 and trialId == 0 then  -- player can only keep 10 trials at once
             player:startEvent(EVENT_IDS[4], 0, 0, 0, 0, 0, 0, 0, utils.MAX_UINT32 - 254)
             return
 
@@ -524,7 +526,7 @@ tpz.magian.magianOnEventFinish = function(player, itemId, csid, option, EVENT_ID
     local msg = zones[zoneid].text
     local ID = require("scripts/zones/RuLude_Gardens/IDs")
 
-    if (EVENT_IDS[11] and csid == EVENT_IDS[11] and option == 1 and not player:hasKeyItem(tpz.ki.MAGIAN_TRIAL_LOG)) then
+    if (EVENT_IDS[11] and csid == EVENT_IDS[11] and option == 1) then
         player:messageSpecial(ID.text.KEYITEM_OBTAINED, tpz.ki.MAGIAN_LEARNERS_LOG)
         player:addKeyItem(tpz.ki.MAGIAN_LEARNERS_LOG)
         player:setCharVar("MetGreenMagianMog", 1)
