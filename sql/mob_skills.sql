@@ -953,7 +953,7 @@ INSERT INTO `mob_skills` VALUES (1124,772,'regain_hp',1,25.0,2000,0,4,0,0,0,0,0,
 INSERT INTO `mob_skills` VALUES (1125,773,'regain_mp',1,25.0,2000,0,4,0,0,0,0,0,0); -- Dyna Statues
 -- INSERT INTO `mob_skills` VALUES (1126,870,'#870',0,7.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (1127,316,'dynamic_implosion',1,18.0,2000,1500,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (1128,817,'transfusion',1,18.0,2000,1500,4,0,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (1128,317,'transfusion',1,18.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (1129,318,'manastrom',1,18.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (1130,319,'dynamic_assault',0,7.0,2000,1500,4,0,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (1131,320,'violent_rupture',1,18.0,2000,1500,4,0,0,0,0,0,0);
