@@ -742,7 +742,7 @@ function dynamis.procMonster(mob, player)
         end
         local extensions = dynamis.getExtensions(player)
         if extensions > 2 then
-            if player:getSubJob() == tpz.job.NONE and math.random(0, 10) == 0 then
+            if player:hasStatusEffect(tpz.effect.SJ_RESTRICTION) and math.random(0, 5) == 0 then
                 mob:setLocalVar("dynamis_proc", 4)
                 mob:weaknessTrigger(3)
                 mob:addStatusEffect(tpz.effect.TERROR, 0, 0, 30)
