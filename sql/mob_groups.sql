@@ -7138,12 +7138,14 @@ INSERT INTO `mob_groups` VALUES (41,3241,101,'Pyracmon',0,128,2047,0,0,1,1,0);
 INSERT INTO `mob_groups` VALUES (42,4381,101,'Wraith_Bat',0,128,0,0,0,1,1,0);
 INSERT INTO `mob_groups` VALUES (43,6543,101,'Enchanted_Bones_war',330,1,769,0,0,4,8,0);
 INSERT INTO `mob_groups` VALUES (44,3221,101,'Pugil',330,0,2034,0,0,1,5,0);
-INSERT INTO `mob_groups` VALUES (45,4736,101,'Yilbegan',0,128,0,0,0,0,0,0);
-INSERT INTO `mob_groups` VALUES (46,0,101,'Krabkatoa',0,128,0,0,0,0,0,0);
-INSERT INTO `mob_groups` VALUES (47,0,101,'Yacumama',0,128,0,0,0,0,0,0);
-INSERT INTO `mob_groups` VALUES (48,0,101,'Capricornus',0,128,0,0,0,0,0,0);
-INSERT INTO `mob_groups` VALUES (49,0,101,'Quagmire_Pugil',0,128,0,0,0,0,0,0);
-INSERT INTO `mob_groups` VALUES (50,0,101,'Sunderclaw',0,128,0,0,0,0,0,0);
+-- Voidwalker
+INSERT INTO `mob_groups` VALUES (45,6999,101,'Yilbegan',86400,128,0,50000,0,0,0,0);
+INSERT INTO `mob_groups` VALUES (46,6998,101,'Krabkatoa',7200,128,0,24000,0,0,0,0);
+INSERT INTO `mob_groups` VALUES (47,6997,101,'Yacumama',3600,128,0,13500,0,0,0,0);
+INSERT INTO `mob_groups` VALUES (48,6996,101,'Capricornus',3600,128,0,13500,0,0,0,0);
+INSERT INTO `mob_groups` VALUES (49,6995,101,'Quagmire_Pugil',300,128,0,5200,0,0,0,0);
+INSERT INTO `mob_groups` VALUES (50,6994,101,'Sunderclaw',300,128,0,4930,0,0,0,0);
+--
 INSERT INTO `mob_groups` VALUES (51,0,101,'Tatenashi_Armor',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (52,0,101,'Hizamaru_Armor',0,128,0,0,0,0,0,0);
 INSERT INTO `mob_groups` VALUES (53,0,101,'Ubuginu_Armor',0,128,0,0,0,0,0,0);

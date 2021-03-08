@@ -1,10 +1,10 @@
 -----------------------------------
 -- Area: East Ronfaure
---  VNM: Yilbegan
+--  Mob: Yacumama
 -----------------------------------
-require("scripts/globals/titles")
 require("scripts/globals/voidwalker")
 -----------------------------------
+
 local entity = {}
 
 entity.onMobInitialize = function(mob)
@@ -16,7 +16,6 @@ entity.onMobSpawn = function(mob)
 end
 
 entity.onMobDeath = function(mob, player, isKiller)
-    player:addTitle(tpz.title.YILBEGAN_HIDEFLAYER)
     tpz.voidwalker.mobOnDeath(mob, player, isKiller)
 end
 

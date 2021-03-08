@@ -53,6 +53,9 @@ ENABLE_MAGIAN_TRIALS = 1
 MAGIAN_TRIALS_MOBKILL_MULTIPLIER = 5
 MAGIAN_TRIALS_TRADE_MULTIPLIER = 1
 
+-- VoidWalker
+ENABLE_VOIDWALKER = 1
+
 -- TREASURE CASKETS
 -- Retail droprate = 0.1 (10%) with no other effects active
 -- Set to 0 to disable caskets.
