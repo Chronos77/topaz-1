@@ -73,10 +73,9 @@ local function setRandomPos(mob)
     end
     posUsed[zoneId][pos] = { mobId=mob:getID(), keyItem=ki }
     local vPos = voidwalkerPos[zoneId][pos]
-    printf("vpos %i ",vPos[1])
-    printf("vpos %i ",vPos[2])
-    printf("vpos %i ",vPos[3])
-    mob:setPos(vPos[1], vPos[2], vPos[3])
+    printf("zoneid: %i, mobid: %i, vposx %i, vposy %i, vposz %i",zoneId, mob:getID(),vPos[1],vPos[2],vPos[3])
+    mob:setSpawn(vPos[1], vPos[2], vPos[3])
+    SpawnMob(mob:getID())
 end
 
 -- 
