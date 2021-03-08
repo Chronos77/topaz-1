@@ -2,6 +2,7 @@
 -- Area: East_Ronfaure
 -----------------------------------
 require("scripts/globals/zone")
+require("scripts/globals/keyitems")
 -----------------------------------
 
 zones = zones or {}
@@ -54,6 +55,23 @@ zones[tpz.zone.EAST_RONFAURE] =
             [17191187] = 17191189, -- 379.120 -27.898 -46.436
             [17191019] = 17191189, -- 373.619 -37.093 8.811
         },
+        VOIDWALKER        =
+        {
+            [tpz.keyItem.CLEAR_ABYSSITE] = {
+                17191331, -- Sunderclaw
+                17191327  -- Quagmire Pugil
+            },
+            [tpz.keyItem.COLORFUL_ABYSSITE] = {
+                17191326, -- Capricornus
+                17191325  -- Yacumama
+            },
+            [tpz.keyItem.BLUE_ABYSSITE] = {
+                17191324  -- Krabkatoa
+            },
+            [tpz.keyItem.BLACK_ABYSSITE] = {
+                17191323  -- Yilbegan
+            }
+        }
     },
     npc =
     {
